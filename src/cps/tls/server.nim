@@ -8,10 +8,10 @@
 ## initial call is proxied to the event loop via postToEventLoop.
 
 import std/[nativesockets, net, openssl]
-import ../runtime
-import ../eventloop
-import ../io/tcp
-import ../io/streams
+import cps/runtime
+import cps/eventloop
+import cps/io/tcp
+import cps/io/streams
 
 # Reuse the SSL_CTX_ctrl binding from client tls.nim for min proto version
 const SSL_CTRL_SET_MIN_PROTO_VERSION = 123.clong

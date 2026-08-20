@@ -4,10 +4,10 @@
 ## Supports ALPN negotiation for HTTP/2.
 
 import std/[nativesockets, net, strutils, openssl]
-import ../runtime
-import ../eventloop
-import ../io/tcp
-import ../io/streams
+import cps/runtime
+import cps/eventloop
+import cps/io/tcp
+import cps/io/streams
 import ./fingerprint
 
 when defined(useBoringSSL):
