@@ -14,6 +14,7 @@ import std/openssl
 # GREASE and extension permutation
 # ============================================================
 
+## Expose the native `SSL_CTX_set_grease_enabled` binding used by the TLS transport.
 proc SSL_CTX_set_grease_enabled*(ctx: SslCtx, enabled: cint)
   {.cdecl, dynlib: DLLSSLName, importc.}
   ## Enable/disable GREASE (Generate Random Extensions And Sustain Extensibility).
@@ -28,6 +29,7 @@ proc SSL_CTX_set_permute_extensions*(ctx: SslCtx, enabled: cint)
 # Groups and signature algorithms
 # ============================================================
 
+## Expose the native `SSL_CTX_set1_groups_list` binding used by the TLS transport.
 proc SSL_CTX_set1_groups_list*(ctx: SslCtx, list: cstring): cint
   {.cdecl, dynlib: DLLSSLName, importc.}
   ## Set the supported groups (curves) for key exchange.
@@ -42,9 +44,11 @@ proc SSL_CTX_set1_sigalgs_list*(ctx: SslCtx, str: cstring): cint
 # Version control (real functions in BoringSSL, not macros)
 # ============================================================
 
+## Expose the native `SSL_CTX_set_min_proto_version` binding used by the TLS transport.
 proc SSL_CTX_set_min_proto_version*(ctx: SslCtx, version: uint16): cint
   {.cdecl, dynlib: DLLSSLName, importc.}
 
+## Expose the native `SSL_CTX_set_max_proto_version` binding used by the TLS transport.
 proc SSL_CTX_set_max_proto_version*(ctx: SslCtx, version: uint16): cint
   {.cdecl, dynlib: DLLSSLName, importc.}
 
@@ -62,6 +66,7 @@ type
 const
   CertCompressionBrotli* = 0x0002'u16  ## Brotli algorithm ID for cert compression
 
+## Expose the native `SSL_CTX_add_cert_compression_alg` binding used by the TLS transport.
 proc SSL_CTX_add_cert_compression_alg*(ctx: SslCtx, algId: uint16,
     compress: SslCertCompressionAlgCompressFunc,
     decompress: SslCertCompressionAlgDecompressFunc): cint
@@ -73,6 +78,7 @@ proc SSL_CTX_add_cert_compression_alg*(ctx: SslCtx, algId: uint16,
 # ALPS (Application-Layer Protocol Settings)
 # ============================================================
 
+## Expose the native `SSL_add_application_settings` binding used by the TLS transport.
 proc SSL_add_application_settings*(ssl: SslPtr, proto: ptr uint8,
     protoLen: csize_t, settings: ptr uint8, settingsLen: csize_t): cint
   {.cdecl, dynlib: DLLSSLName, importc.}

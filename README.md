@@ -116,8 +116,12 @@ committed.
 
 ## Development
 
+Read the [TLS developer guide](docs/development.md) before changing public
+APIs, ownership, protocol state, or execution behavior.
+
 ```sh
 nimble install -d -y
+nimble checkDocs
 nimble test
 ```
 

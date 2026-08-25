@@ -18,6 +18,7 @@ const SSL_CTRL_SET_MIN_PROTO_VERSION = 123.clong
 const TLS1_2_VERSION = 0x0303.clong
 const SSL_FILETYPE_PEM = 1.cint
 
+## Expose the native `SSL_CTX_ctrl` binding used by the TLS transport.
 proc SSL_CTX_ctrl*(ctx: SslCtx, cmd: clong, larg: clong, parg: pointer): clong
   {.cdecl, dynlib: DLLSSLName, importc.}
 
@@ -83,6 +84,7 @@ proc alpnSelectCallback(ssl: SslPtr, outProto: ptr cstring,
 
 proc newTlsServerContext*(certFile: string, keyFile: string,
                            alpnProtocols: seq[string] = @["h2", "http/1.1"]): TlsServerContext =
+  ## Create a new TLS server context.
   SSL_library_init()
   SSL_load_error_strings()
 
@@ -120,6 +122,7 @@ proc newTlsServerContext*(certFile: string, keyFile: string,
                                         cast[pointer](result))
 
 proc closeTlsServerContext*(ctx: TlsServerContext) =
+  ## Close TLS server context and release its owned resources.
   if not ctx.sslCtx.isNil:
     SSL_CTX_free(ctx.sslCtx)
 

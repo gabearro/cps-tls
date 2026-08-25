@@ -37,9 +37,11 @@ proc ensureOnReactor(cb: proc() {.closure.}) =
 # In BoringSSL these are real functions (imported via boringssl.nim).
 const TLS1_2_VERSION* = 0x0303.clong
 
+## Expose the native `SSL_CTX_ctrl` binding used by the TLS transport.
 proc SSL_CTX_ctrl*(ctx: SslCtx, cmd: clong, larg: clong, parg: pointer): clong
   {.cdecl, dynlib: DLLSSLName, importc.}
 
+## Expose the native `SSL_CTX_set_default_verify_paths` binding used by the TLS transport.
 proc SSL_CTX_set_default_verify_paths*(ctx: SslCtx): cint
   {.cdecl, dynlib: DLLSSLName, importc.}
 
@@ -59,6 +61,7 @@ else:
     boringssl.SSL_CTX_set_max_proto_version(ctx, uint16(version)) != 0
 
 # SSL_CTX_set_ciphersuites for TLS 1.3 (OpenSSL 1.1.1+ / BoringSSL)
+## Expose the native `SSL_CTX_set_ciphersuites` binding used by the TLS transport.
 proc SSL_CTX_set_ciphersuites*(ctx: SslCtx, str: cstring): cint
   {.cdecl, dynlib: DLLSSLName, importc.}
 
@@ -69,8 +72,10 @@ when not defined(useBoringSSL):
   const SSL_CTRL_SET_GROUPS_LIST = 92.clong
   const SSL_CTRL_SET_SIGALGS_LIST = 98.clong
   proc SSL_CTX_set1_groups_list*(ctx: SslCtx, list: cstring): clong =
+    ## Expose the native `SSL_CTX_set1_groups_list` binding used by the TLS transport.
     SSL_CTX_ctrl(ctx, SSL_CTRL_SET_GROUPS_LIST, 0, cast[pointer](list))
   proc SSL_CTX_set1_sigalgs_list*(ctx: SslCtx, str: cstring): clong =
+    ## Expose the native `SSL_CTX_set1_sigalgs_list` binding used by the TLS transport.
     SSL_CTX_ctrl(ctx, SSL_CTRL_SET_SIGALGS_LIST, 0, cast[pointer](str))
 
 type
