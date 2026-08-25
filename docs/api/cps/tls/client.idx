@@ -1,0 +1,11 @@
+nimTitle	client	cps/tls/client.html	module cps/tls/client		0
+nim	TLS1_2_VERSION	cps/tls/client.html#TLS1_2_VERSION	const TLS1_2_VERSION		38
+nim	SSL_CTX_ctrl	cps/tls/client.html#SSL_CTX_ctrl,SslCtx,clong,clong,pointer	proc SSL_CTX_ctrl(ctx: SslCtx; cmd: clong; larg: clong; parg: pointer): clong		41
+nim	SSL_CTX_set_default_verify_paths	cps/tls/client.html#SSL_CTX_set_default_verify_paths,SslCtx	proc SSL_CTX_set_default_verify_paths(ctx: SslCtx): cint		45
+nim	SSL_CTX_set_ciphersuites	cps/tls/client.html#SSL_CTX_set_ciphersuites,SslCtx,cstring	proc SSL_CTX_set_ciphersuites(ctx: SslCtx; str: cstring): cint		65
+nim	SSL_CTX_set1_groups_list	cps/tls/client.html#SSL_CTX_set1_groups_list,SslCtx,cstring	proc SSL_CTX_set1_groups_list(ctx: SslCtx; list: cstring): clong		74
+nim	SSL_CTX_set1_sigalgs_list	cps/tls/client.html#SSL_CTX_set1_sigalgs_list,SslCtx,cstring	proc SSL_CTX_set1_sigalgs_list(ctx: SslCtx; str: cstring): clong		77
+nim	TlsStream	cps/tls/client.html#TlsStream	type TlsStream		82
+nim	tlsShutdownWrite	cps/tls/client.html#tlsShutdownWrite,TlsStream	proc tlsShutdownWrite(tls: TlsStream)		166
+nim	newTlsStream	cps/tls/client.html#newTlsStream,TcpStream,string,openArray[string],TlsFingerprint	proc newTlsStream(tcpStream: TcpStream; hostname: string;\n             alpnProtocols: openArray[string] = @["h2", "http/1.1"];\n             fp: TlsFingerprint = nil): TlsStream		188
+nim	tlsConnect	cps/tls/client.html#tlsConnect,TlsStream	proc tlsConnect(tls: TlsStream): CpsVoidFuture		337

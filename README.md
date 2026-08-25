@@ -122,8 +122,12 @@ APIs, ownership, protocol state, or execution behavior.
 ```sh
 nimble install -d -y
 nimble checkDocs
+nimble docs
 nimble test
 ```
+
+`nimble docs` writes the generated API reference to
+[`docs/api/theindex.html`](docs/api/theindex.html).
 
 The default test suite validates the fingerprint model without requiring a
 network connection. Client/server integration is exercised by the downstream

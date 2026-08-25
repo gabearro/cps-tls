@@ -1,0 +1,7 @@
+nimTitle	server	cps/tls/server.html	module cps/tls/server		0
+nim	SSL_CTX_ctrl	cps/tls/server.html#SSL_CTX_ctrl,SslCtx,clong,clong,pointer	proc SSL_CTX_ctrl(ctx: SslCtx; cmd: clong; larg: clong; parg: pointer): clong		22
+nim	TlsServerContext	cps/tls/server.html#TlsServerContext	type TlsServerContext		26
+nim	TlsServerStream	cps/tls/server.html#TlsServerStream	type TlsServerStream		31
+nim	newTlsServerContext	cps/tls/server.html#newTlsServerContext,string,string,seq[string]	proc newTlsServerContext(certFile: string; keyFile: string;\n                    alpnProtocols: seq[string] = @["h2", "http/1.1"]): TlsServerContext		85
+nim	closeTlsServerContext	cps/tls/server.html#closeTlsServerContext,TlsServerContext	proc closeTlsServerContext(ctx: TlsServerContext)		124
+nim	tlsAccept	cps/tls/server.html#tlsAccept,TlsServerContext,TcpStream	proc tlsAccept(ctx: TlsServerContext; tcpStream: TcpStream): CpsFuture[\n    TlsServerStream]		228

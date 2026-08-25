@@ -1,0 +1,12 @@
+nimTitle	boringssl	cps/tls/boringssl.html	module cps/tls/boringssl		0
+nim	SSL_CTX_set_grease_enabled	cps/tls/boringssl.html#SSL_CTX_set_grease_enabled,SslCtx,cint	proc SSL_CTX_set_grease_enabled(ctx: SslCtx; enabled: cint)		18
+nim	SSL_CTX_set_permute_extensions	cps/tls/boringssl.html#SSL_CTX_set_permute_extensions,SslCtx,cint	proc SSL_CTX_set_permute_extensions(ctx: SslCtx; enabled: cint)		23
+nim	SSL_CTX_set1_groups_list	cps/tls/boringssl.html#SSL_CTX_set1_groups_list,SslCtx,cstring	proc SSL_CTX_set1_groups_list(ctx: SslCtx; list: cstring): cint		33
+nim	SSL_CTX_set1_sigalgs_list	cps/tls/boringssl.html#SSL_CTX_set1_sigalgs_list,SslCtx,cstring	proc SSL_CTX_set1_sigalgs_list(ctx: SslCtx; str: cstring): cint		38
+nim	SSL_CTX_set_min_proto_version	cps/tls/boringssl.html#SSL_CTX_set_min_proto_version,SslCtx,uint16	proc SSL_CTX_set_min_proto_version(ctx: SslCtx; version: uint16): cint		48
+nim	SSL_CTX_set_max_proto_version	cps/tls/boringssl.html#SSL_CTX_set_max_proto_version,SslCtx,uint16	proc SSL_CTX_set_max_proto_version(ctx: SslCtx; version: uint16): cint		52
+nim	SslCertCompressionAlgCompressFunc	cps/tls/boringssl.html#SslCertCompressionAlgCompressFunc	type SslCertCompressionAlgCompressFunc		60
+nim	SslCertCompressionAlgDecompressFunc	cps/tls/boringssl.html#SslCertCompressionAlgDecompressFunc	type SslCertCompressionAlgDecompressFunc		62
+nim	CertCompressionBrotli	cps/tls/boringssl.html#CertCompressionBrotli	const CertCompressionBrotli		67
+nim	SSL_CTX_add_cert_compression_alg	cps/tls/boringssl.html#SSL_CTX_add_cert_compression_alg,SslCtx,uint16,SslCertCompressionAlgCompressFunc,SslCertCompressionAlgDecompressFunc	proc SSL_CTX_add_cert_compression_alg(ctx: SslCtx; algId: uint16;\n                                 compress: SslCertCompressionAlgCompressFunc;\n    decompress: SslCertCompressionAlgDecompressFunc): cint		70
+nim	SSL_add_application_settings	cps/tls/boringssl.html#SSL_add_application_settings,SslPtr,ptr.uint8,csize_t,ptr.uint8,csize_t	proc SSL_add_application_settings(ssl: SslPtr; proto: ptr uint8; protoLen: csize_t;\n                             settings: ptr uint8; settingsLen: csize_t): cint		82

@@ -50,8 +50,12 @@ document ownership, handshake state, and error behavior.
 
 ```sh
 nimble checkDocs
+nimble docs
 nimble test
 ```
+
+The generated Nim API reference is committed under `docs/api`; open
+`docs/api/theindex.html` to search exported symbols and their `##` docstrings.
 
 Run downstream HTTP/2, HTTP/3, and IRC integration tests after changing ALPN,
 verification, shutdown, or native-library selection.

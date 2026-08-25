@@ -1,0 +1,6 @@
+nimTitle	fingerprint	cps/tls/fingerprint.html	module cps/tls/fingerprint		0
+nim	TlsFingerprint	cps/tls/fingerprint.html#TlsFingerprint	type TlsFingerprint		8
+nim	Http2Fingerprint	cps/tls/fingerprint.html#Http2Fingerprint	type Http2Fingerprint		21
+nim	BrowserProfile	cps/tls/fingerprint.html#BrowserProfile	type BrowserProfile		26
+nim	chromeProfile	cps/tls/fingerprint.html#chromeProfile	proc chromeProfile(): BrowserProfile		35
+nim	firefoxProfile	cps/tls/fingerprint.html#firefoxProfile	proc firefoxProfile(): BrowserProfile		77
