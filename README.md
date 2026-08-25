@@ -26,7 +26,7 @@ protocols can use it exactly like a TCP stream.
 ## Install
 
 ```sh
-nimble install https://github.com/gabearro/cps-tls@#v1.0.0
+nimble install https://github.com/gabearro/cps-tls@#v1.0.1
 ```
 
 ## TLS client
