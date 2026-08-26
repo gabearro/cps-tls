@@ -21,10 +21,8 @@ when defined(useBoringSSL):
 proc ensureOnReactor(cb: proc() {.closure.}) =
   ## If called from a worker thread in MT mode, proxy to the reactor.
   ## Otherwise, call directly.
-  let rt = currentRuntime().runtime
-  if rt != nil and rt.flavor == rfMultiThread and isSchedulerWorker and
-      currentSchedulerPtr == cast[pointer](rt.schedulerPtr):
-    let loop = getEventLoop()
+  let loop = getEventLoop()
+  if loop.shouldProxyToReactor():
     loop.postToEventLoop(proc() {.closure, gcsafe.} =
       {.cast(gcsafe).}:
         cb()

@@ -26,7 +26,7 @@ protocols can use it exactly like a TCP stream.
 ## Install
 
 ```sh
-nimble install https://github.com/gabearro/cps-tls@#v1.0.1
+nimble install https://github.com/gabearro/cps-tls@#v1.0.2
 ```
 
 ## TLS client
@@ -124,7 +124,11 @@ nimble install -d -y
 nimble checkDocs
 nimble docs
 nimble test
+nimble testMms
 ```
+
+The library supports ARC, ORC, and AtomicARC. `nimble testMms` runs the
+same supported surface under all three memory managers.
 
 `nimble docs` writes the generated API reference to
 [`docs/api/theindex.html`](docs/api/theindex.html).

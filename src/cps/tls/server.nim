@@ -27,6 +27,7 @@ type
     sslCtx*: SslCtx
     alpnProtocols*: seq[string]
     alpnWire*: seq[byte]  ## Wire-format of server preferred protocols
+    alpnRooted: bool
 
   TlsServerStream* = ref object of AsyncStream
     ssl: SslPtr
@@ -42,10 +43,8 @@ type
 proc ensureOnReactor(cb: proc() {.closure.}) =
   ## If called from a worker thread in MT mode, proxy to the reactor.
   ## Otherwise, call directly.
-  let rt = currentRuntime().runtime
-  if rt != nil and rt.flavor == rfMultiThread and isSchedulerWorker and
-      currentSchedulerPtr == cast[pointer](rt.schedulerPtr):
-    let loop = getEventLoop()
+  let loop = getEventLoop()
+  if loop.shouldProxyToReactor():
     loop.postToEventLoop(proc() {.closure, gcsafe.} =
       {.cast(gcsafe).}:
         cb()
@@ -118,6 +117,7 @@ proc newTlsServerContext*(certFile: string, keyFile: string,
 
   if alpnProtocols.len > 0:
     GC_ref(result)
+    result.alpnRooted = true
     discard SSL_CTX_set_alpn_select_cb(ctx, alpnSelectCallback,
                                         cast[pointer](result))
 
@@ -125,6 +125,10 @@ proc closeTlsServerContext*(ctx: TlsServerContext) =
   ## Close TLS server context and release its owned resources.
   if not ctx.sslCtx.isNil:
     SSL_CTX_free(ctx.sslCtx)
+    ctx.sslCtx = nil
+  if ctx.alpnRooted:
+    ctx.alpnRooted = false
+    GC_unref(ctx)
 
 # ============================================================
 # AsyncStream vtable for TlsServerStream
