@@ -1,4 +1,4 @@
-version = "1.0.2"
+version = "1.0.3"
 author = "Gabriel Arroyo"
 description = "Async TLS client and server streams for the CPS Nim runtime."
 license = "MIT"
@@ -6,7 +6,7 @@ srcDir = "src"
 skipDirs = @["tests", "examples", "benchmarks", ".github"]
 
 requires "nim >= 2.0.0"
-requires "https://github.com/gabearro/cps-runtime == 1.1.1"
+requires "https://github.com/gabearro/cps-runtime == 1.1.2"
 
 task checkDocs, "Verify developer documentation coverage":
   exec "python3 scripts/check_dev_docs.py"

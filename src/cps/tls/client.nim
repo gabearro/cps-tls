@@ -106,12 +106,12 @@ proc tlsStreamRead(s: AsyncStream, size: int): CpsFuture[string] =
       let err = SSL_get_error(tls.ssl, ret)
       if err == SSL_ERROR_WANT_READ:
         loop.registerRead(tls.tcpStream.fd, proc() =
-          loop.unregister(tls.tcpStream.fd)
+          loop.disarm(tls.tcpStream.fd)
           doRecv()
         )
       elif err == SSL_ERROR_WANT_WRITE:
         loop.registerWrite(tls.tcpStream.fd, proc() =
-          loop.unregister(tls.tcpStream.fd)
+          loop.disarm(tls.tcpStream.fd)
           doRecv()
         )
       elif err == SSL_ERROR_ZERO_RETURN:
@@ -125,11 +125,30 @@ proc tlsStreamRead(s: AsyncStream, size: int): CpsFuture[string] =
 
 proc tlsStreamWrite(s: AsyncStream, data: string): CpsVoidFuture =
   let tls = TlsStream(s)
-  let fut = newCpsVoidFuture()
-  fut.pinFutureRuntime()
   let loop = getEventLoop()
   var sent = 0
   let totalLen = data.len
+
+  # Keep the common nonblocking success path allocation-free. Cross-thread
+  # callers still proxy before touching the non-thread-safe SSL object.
+  if not loop.shouldProxyToReactor():
+    while sent < totalLen:
+      let ret = SSL_write(tls.ssl, cast[cstring](unsafeAddr data[sent]),
+                          (totalLen - sent).cint)
+      if ret > 0:
+        sent += ret
+      else:
+        let err = SSL_get_error(tls.ssl, ret)
+        if err == SSL_ERROR_WANT_READ or err == SSL_ERROR_WANT_WRITE:
+          break
+        return failedVoidFuture(newException(
+          system.IOError, "TLS write failed, SSL error: " & $err
+        ))
+    if sent >= totalLen:
+      return cachedCompletedVoidFuture()
+
+  let fut = newCpsVoidFuture()
+  fut.pinFutureRuntime()
 
   proc doSend() =
     while sent < totalLen:
@@ -142,13 +161,13 @@ proc tlsStreamWrite(s: AsyncStream, data: string): CpsVoidFuture =
         let err = SSL_get_error(tls.ssl, ret)
         if err == SSL_ERROR_WANT_READ:
           loop.registerRead(tls.tcpStream.fd, proc() =
-            loop.unregister(tls.tcpStream.fd)
+            loop.disarm(tls.tcpStream.fd)
             doSend()
           )
           return
         elif err == SSL_ERROR_WANT_WRITE:
           loop.registerWrite(tls.tcpStream.fd, proc() =
-            loop.unregister(tls.tcpStream.fd)
+            loop.disarm(tls.tcpStream.fd)
             doSend()
           )
           return
@@ -350,12 +369,12 @@ proc tlsConnect*(tls: TlsStream): CpsVoidFuture =
     let err = SSL_get_error(tls.ssl, ret)
     if err == SSL_ERROR_WANT_READ:
       loop.registerRead(tls.tcpStream.fd, proc() =
-        loop.unregister(tls.tcpStream.fd)
+        loop.disarm(tls.tcpStream.fd)
         doHandshake()
       )
     elif err == SSL_ERROR_WANT_WRITE:
       loop.registerWrite(tls.tcpStream.fd, proc() =
-        loop.unregister(tls.tcpStream.fd)
+        loop.disarm(tls.tcpStream.fd)
         doHandshake()
       )
     else:
